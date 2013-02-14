@@ -20,6 +20,7 @@
  */
 
 $(document).ready(function() {
+    var statsKey = null;
     var reload = function() {
         chrome.devtools.inspectedWindow.eval(
             "Deki.Stats",
@@ -29,24 +30,34 @@ $(document).ready(function() {
                     $('#mt-error').find('*').remove();
                     $('#mt-error').append('<h2 id="mt-chrome-ext-error">Waiting for statistics</h2>');
                     $('#mt-error').show();
+                    statsKey = null;
                 } else {
+                    if(statsKey === btoa(result)) {
+                        return;
+                    }
+                    statsKey = btoa(result);
                     $('#mt-api-stats').show();
                     $('#mt-error').hide();
                     $('#mt-stats-table').find('tr:gt(0)').remove();
                     $('#mt-stats-total').find('*').remove();
                     var content = '';
-                    _.each(result.stats.requests, function(request) {
-                        content += '<tr>' +
-                            '<td class="col1">' + request.verb + '</td>' +
-                            '<td class="col2">' + request.time + '</td>' +
-                            '<td class="col3"><div class="stat-col"><a target="_blank" href="' + request.urlPath + '">' + request.urlPath.substring(0, 80) + '</a></div>';
-                        request.stats.split(';').forEach(function(item) {
-                             content += '<div class="stat-col">' + item + '</div>';
-                        });
-                        content += '</td></tr>';
-                    });
-                    $('#mt-stats-table').append(content);
-                    $('#mt-stats-total').append('<span> ' + result.stats.total + '</span>');
+                    chrome.devtools.inspectedWindow.eval(
+                        "Deki.BaseHref",
+                        function(href, isException) {
+                            _.each(result.stats.requests, function(request) {
+                                content += '<tr>' +
+                                    '<td class="col1">' + request.verb + '</td>' +
+                                    '<td class="col2">' + request.time + '</td>' +
+                                    '<td class="col3"><div class="stat-col"><a target="_blank" href="' + href + request.urlPath + '">' + request.urlPath.substring(0, 80) + '</a></div>';
+                                request.stats.split(';').forEach(function(item) {
+                                    content += '<div class="stat-col">' + item + '</div>';
+                                });
+                                content += '</td></tr>';
+                            });
+                        $('#mt-stats-table').append(content);
+                        }
+                    );
+                    $('#mt-stats-total').append('<span>' + result.stats.total + '</span>');
                 }
             });
     };
