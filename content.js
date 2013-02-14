@@ -40,7 +40,7 @@ $(document).ready(function() {
                     statsKey = btoa(result);
                     $('#mt-api-stats').show();
                     $('#mt-error').hide();
-                    $('#mt-stats-table').find('tr:gt(0)').remove();
+                    $('#mt-stats-table').find('tr').remove();
                     $('#mt-stats-total').find('*').remove();
                     var content = '';
                     _(result.stats.requests).each(function(req, idx) {
@@ -86,6 +86,7 @@ $(document).ready(function() {
                                     var reset = _(statMap['reset']).toNumber(3) || null;
                                     var str = '';
                                     var tdClass = '';
+                                    var tdClassReset = '';
                                     if(!miss && !hit && !ratio && !reset) {
                                         str = _(request.cols[col]).strRightBack('=') || '';
                                     } else {
@@ -102,18 +103,18 @@ $(document).ready(function() {
                                         }
                                         if(ratio) {
                                             if(ratio > 0.99) {
-                                                tdClass = 'good';
+                                                tdClass = ' class="good"';
                                             } else if(ratio < 0.5) {
-                                                tdClass = 'bad';
+                                                tdClass = ' class="bad"';
                                             }
-                                            str += ' ( ' + _(ratio * 100).numberFormat(1) + '% )';
+                                            str += ' <br /><span' + tdClass +'>(' + _(ratio * 100).numberFormat(1) + '%)</span>';
                                         }
                                         if(reset) {
-                                            tdClass = 'reset'
+                                            tdClassReset = ' reset'
                                             str += '<br />reset: ' + reset;
                                         } 
                                     }
-                                    content += '<td class="col' + (idx + 4) + ' ' + tdClass + '">' + str + '</td>';
+                                    content += '<td class="col' + (idx + 4) + tdClassReset + '">' + str + '</td>';
                                 });
                                 content += '</tr>';
                             });

@@ -3,7 +3,7 @@ body {
 	font-size: 10px;
 }
 a {
-	color: green;
+	color: #2166b0;
 }
 h1 {
 	color: #333;
@@ -36,16 +36,21 @@ tr:nth-child(odd) {
 }
 th {
 	background: #ddd;
+	border-right: 1px solid #999;
 	border-bottom: 1px solid #999;
 	color: #444;
 	padding: 5px;
-	text-align: left;
+	text-align: center;
+	vertical-align: top;
 }
 td {
+    border-right: 1px solid #bbb;
     border-bottom: 1px solid #bbb;
     line-height: 1.8em;
     padding: 5px;
-    vertical-align: top;	
+    text-align: center;
+    vertical-align: top;
+    width: 5%;	
 }
 table tr:first-child td:first-child {
     border-top-left-radius: 10px;
@@ -60,14 +65,15 @@ table tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
 }
 .col1 {
-	width: 5%;
-}
-.col2 {
-    text-align: center;
-    width: 5%;
+	text-align: left;
+	width: 4%;
 }
 .col3 {
-    width: 40%;
+    text-align: left;
+    width: 20%;
+}
+.col8 {
+	width: 8%;
 }
 .stat-col {
 	float: left;
@@ -75,4 +81,19 @@ table tr:last-child td:last-child {
 }
 td.col2 {
 	font-weight: bold;
+}
+td span {
+	color: #666;
+}
+.good {
+    color: green;
+    color: #23b801;
+}
+.bad {
+    color: red;
+}
+.reset {
+    background: #fed8da;
+    color: red;
+    font-weight: bold;
 }
