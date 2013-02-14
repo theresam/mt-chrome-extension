@@ -20,6 +20,7 @@
  */
 
 $(document).ready(function() {
+    var statsKey = null;
     var reload = function() {
         chrome.devtools.inspectedWindow.eval(
             "Deki.Stats",
@@ -30,22 +31,31 @@ $(document).ready(function() {
                     $('#mt-error').append('<h2 id="mt-chrome-ext-error">Waiting for statistics</h2>');
                     $('#mt-error').show();
                 } else {
+                    if(statsKey === btoa(result)) {
+                        return;
+                    }
+                    statsKey = btoa(result);
                     $('#mt-api-stats').show();
                     $('#mt-error').hide();
                     $('#mt-stats-table').find('tr:gt(0)').remove();
                     $('#mt-stats-total').find('*').remove();
                     var content = '';
-                    _.each(result.stats.requests, function(request) {
-                        content += '<tr>' +
-                            '<td>' + request.verb + '</td>' +
-                            '<td>' + request.time + '</td>' +
-                            '<td><a target="_blank" href="' + request.urlPath + '">' + request.urlPath.substring(0, 80) + '</a>';
-                        request.stats.split(';').forEach(function(item) {
-                            content += '<br />' + item;
-                        });
-                        content += '</td></tr>';
-                    });
-                    $('#mt-stats-table').append(content);
+                    chrome.devtools.inspectedWindow.eval(
+                        "Deki.BaseHref",
+                        function(href, isException) {
+                            _.each(result.stats.requests, function(request) {
+                                content += '<tr>' +
+                                    '<td>' + request.verb + '</td>' +
+                                    '<td>' + request.time + '</td>' +
+                                    '<td><a target="_blank" href="' + href + '/@api' + request.urlPath + '">' + request.urlPath.substring(0, 80) + '</a>';
+                                request.stats.split(';').forEach(function(item) {
+                                    content += '<br />' + item;
+                                });
+                                content += '</td></tr>';
+                            });
+                        $('#mt-stats-table').append(content);
+                        }
+                    );
                     $('#mt-stats-total').append('<p>' + result.stats.total + '</p>');
                 }
             });
