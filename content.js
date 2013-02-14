@@ -46,18 +46,18 @@ $(document).ready(function() {
                         function(href, isException) {
                             _.each(result.stats.requests, function(request) {
                                 content += '<tr>' +
-                                    '<td>' + request.verb + '</td>' +
-                                    '<td>' + request.time + '</td>' +
-                                    '<td><a target="_blank" href="' + href + request.urlPath + '">' + request.urlPath.substring(0, 80) + '</a>';
+                                    '<td class="col1">' + request.verb + '</td>' +
+                                    '<td class="col2">' + request.time + '</td>' +
+                                    '<td class="col3"><div class="stat-col"><a target="_blank" href="' + href + request.urlPath + '">' + request.urlPath.substring(0, 80) + '</a></div>';
                                 request.stats.split(';').forEach(function(item) {
-                                    content += '<br />' + item;
+                                    content += '<div class="stat-col">' + item + '</div>';
                                 });
                                 content += '</td></tr>';
                             });
                         $('#mt-stats-table').append(content);
                         }
                     );
-                    $('#mt-stats-total').append('<p>' + result.stats.total + '</p>');
+                    $('#mt-stats-total').append('<span>' + result.stats.total + '</span>');
                 }
             });
     };
