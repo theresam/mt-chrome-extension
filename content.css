@@ -61,14 +61,14 @@ table tr:last-child td:last-child {
 }
 .col1 {
 	text-align: center;
-	width: 8%;
+	width: 5%;
 }
 .col2 {
     text-align: center;
-    width: 8%;
+    width: 5%;
 }
 .col3 {
-    width: 84%;
+    width: 90%;
 }
 .stat-col {
 	float: left;
